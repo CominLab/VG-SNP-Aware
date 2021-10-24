@@ -43,9 +43,9 @@ On other distros, you will need to perform the equivalent of:
                          libffi-dev libcairo-dev libboost-all-dev
 
 
-Check that Protobuf version is at least 3.0
-Check that gcc version is at least 4.9
-Check that cmake version is at least 3.18.x (https://github.com/vgteam/vg/issues/3014)
+Check that Protobuf version is at least 3.0.
+Check that gcc version is at least 4.9.
+Check that cmake version is at least 3.18.x (https://github.com/vgteam/vg/issues/3014).
 
 
 Build VG including VG SNP-Aware:
@@ -62,8 +62,8 @@ The VG SNP-Aware implementation follows the vg pipeline, the change has been mad
 In order  to  perform the  entire genotyping  process  the vg construct  and index steps are required to obtain the graphs.
  
 The map command of VG SNP-Aware includes:
-*  --sequentialSearch:  performs the alignment on graph with the VG SNP-Aware al-gorithm describes on section 
-*  --printMin: allows to reduce the output size to only reads with one or more referenceor alternative base of SNPs
+*  --sequentialSearch:  performs the alignment on graph with the VG SNP-Aware algorithm 
+*  --printMin: allows to reduce the output size to only reads with one or more reference or alternative base of SNPs
 
 To use VG SNP-Aware the sequentialSearch parameter is required while printMin is an optional parameter but it is recommended. The -j parameter is mandatory to obtain as output the JSON mapping file. It is possible to use the vg view command to switch from JSON to GAM files and vice versa.
 
