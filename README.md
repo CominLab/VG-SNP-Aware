@@ -7,6 +7,8 @@ vg represents the two nucleotides of a biallelic SNP as two possible nodes on gr
 ![Variation graph](https://raw.githubusercontent.com/monsmau/vg/vg_snp_aware/doc/figures/variationgraph_with_SNP_ID_SEQ_PATH.png)
 
 The construction of a variation graph starts from a reference genome and a set of SNPs. In case of SNPs, nodes creation is sequential into the forward direction. For the forward direction, the resulting node IDs are increasing, otherwise they are decreasing.  This allows VG SNP-Aware to follow up the consecutive nature of node IDs for an efficient mapping.
+
+
 Algorithms for initial node search and for mapping have been included in the vg map command. Thus, VG SNP-Aware is a custom reimplementation of the map command of vg. 
 VG SNP-Aware is able align reads exactly to a variation graph and detect SNPs based on these aligned reads. The results show that VG SNP-Aware can efficiently map
 reads to a variation graph with a speed of 40x with respect to vg and similar accuracy on SNPs detection.
@@ -45,7 +47,9 @@ On other distros, you will need to perform the equivalent of:
 
 
 Check that Protobuf version is at least 3.0.
+
 Check that gcc version is at least 4.9.
+
 Check that cmake version is at least 3.18.x (https://github.com/vgteam/vg/issues/3014).
 
 
