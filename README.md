@@ -1,27 +1,12 @@
-# vg
+# VG SNP-Aware
 
-[![Join the chat at https://gitter.im/vgteam/vg](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vgteam/vg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Latest Release](https://img.shields.io/github/release/vgteam/vg.svg)](https://github.com/vgteam/vg/releases/latest) [![Build Status](https://travis-ci.org/vgteam/vg.svg?branch=master)](https://travis-ci.org/vgteam/vg) [![Performance Report](https://img.shields.io/badge/performance-report-brightgreen.svg)](https://vg-data.s3.amazonaws.com/vg_ci/vgci_reports/branch/master/index.html) 
-[![Doxygen API Documentation](https://img.shields.io/badge/doxygen-docs-brightgreen.svg)](https://vgteam.github.io/vg/) 
+VG SNP-Aware introduces an optimised alignment process for SNPs,  with the idea to  exploit  only  exact  alignments,  using  a  depth-limited  search  like.   The  process  is composed by two distinct phases: searching for initial node and mapping from it. Both phases are based on the characteristics of the variation graph in case of SNPs.
 
-## variation graph data structures, interchange formats, alignment, genotyping, and variant calling methods
+vg represents the two nucleotides of a biallelic SNP as two possible nodes on graph and for each of them provides an edge from and to it.  This approach allows to have multiple paths which admits all possible sequences on graph, including the reference base or the alternative base of SNPs.  The naming convention applied to the path requires alternative path having a name starting with ”alt”,  this allows to distinguish it from the reference paths. It is important to note that each node belongs to one or more paths.
 
-![Variation graph](https://raw.githubusercontent.com/vgteam/vg/master/doc/figures/vg_logo_small.png)
+![Variation graph](https://raw.githubusercontent.com/monsmau/vg/vg_snp_aware/doc/figures/variationgraph_with_SNP_ID_SEQ_PATH.png)
 
-_Variation graphs_ provide a succinct encoding of the sequences of many genomes. A variation graph (in particular as implemented in vg) is composed of:
-
-* _nodes_, which are labeled by sequences and ids
-* _edges_, which connect two nodes via either of their respective ends
-* _paths_, describe genomes, sequence alignments, and annotations (such as gene models and transcripts) as walks through nodes connected by edges
-
-This model is similar to sequence graphs that have been used in assembly and multiple sequence alignment.
-
-Paths provide coordinate systems relative to genomes encoded in the graph, allowing stable mappings to be produced even if the structure of the graph is changed.
-The variation graph model makes this embedding explicit and essential.
-Tools in vg maintain paths as immutable during transformations of the graph.
-They use paths to project graph-relative data into reference-relative coordinate spaces.
-Paths provide stable coordinates for graphs built in different ways from the same input sequences.
-
-![example variation graph](https://raw.githubusercontent.com/vgteam/vg/master/doc/figures/smallgraph.png)
+Algorithms for initial node search and for mapping have been included in the vg map command.
 
 ## Support 
 
