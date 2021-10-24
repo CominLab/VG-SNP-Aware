@@ -56,6 +56,7 @@ void help_map(char** argv) {
          << "    --no-patch-aln                do not patch banded alignments by locally aligning unaligned regions" << endl
          << "    --xdrop-alignment             use X-drop heuristic (much faster for long-read alignment)" << endl
          << "    --max-gap-length              maximum gap length allowed in each contiguous alignment (for X-drop alignment) [40]" << endl
+         << "    --sequentialSearch            search for the first match node and perform a sequential search starting from it (works only with fq file input)" << endl
          << "scoring:" << endl
          << "    -q, --match INT               use this match score [1]" << endl
          << "    -z, --mismatch INT            use this mismatch penalty [4]" << endl
@@ -94,6 +95,7 @@ void help_map(char** argv) {
          << "    -Q, --mq-max INT              cap the mapping quality at INT [60]" << endl
          << "    --exclude-unaligned           exclude reads with no alignment" << endl
          << "    -D, --debug                   print debugging information about alignment to stderr" << endl
+         << "    --printMin                    print only alignments with variant matches (works with --sequentialSearch)" << endl
          << "    --log-time                    print runtime to stderr" << endl;
 
 }
@@ -122,6 +124,8 @@ int main_map(int argc, char** argv) {
     string read_file;
     string hts_file;
     string fasta_file;
+    bool printMin = false;
+    bool treKmers = false;
     bool keep_secondary = false;
     int hit_max = 2048;
     int max_multimaps = 1;
@@ -267,11 +271,13 @@ int main_map(int argc, char** argv) {
                 {"xdrop-alignment", no_argument, 0, 2},
                 {"gaf", no_argument, 0, '%'},
                 {"log-time", no_argument, 0, '^'},
+                {"sequentialSearch", no_argument, 0, '!'},
+                {"printMin", no_argument, 0, '-'},
                 {0, 0, 0, 0}
             };
 
         int option_index = 0;
-        c = getopt_long (argc, argv, "s:J:Q:d:x:g:1:T:N:R:c:M:t:G:jb:Kf:iw:P:Dk:Y:r:W:6H:Z:q:z:o:y:Au:B:I:S:l:e:C:V:O:L:a:n:E:X:UpF:m:7:v5:824:3:9:0:%^",
+        c = getopt_long (argc, argv, "s:J:Q:d:x:g:1:T:N:R:c:M:t:G:jb:Kf:iw:P:Dk:Y:r:W:6H:Z:q:z:o:y:Au:B:I:S:l:e:C:V:O:L:a:n:E:X:UpF:m:7:v5:824:3:9:0:%^:%!:%-",
                          long_options, &option_index);
 
 
@@ -281,6 +287,13 @@ int main_map(int argc, char** argv) {
 
         switch (c)
         {
+
+        case '-':
+             printMin = true;
+             break;
+        case '!':
+            treKmers = true;
+            break;
         case 's':
             seq = optarg;
             break;
@@ -1058,8 +1071,20 @@ int main_map(int argc, char** argv) {
                 our_mapper->imperfect_pairs_to_retry.clear();
             }
         } else if (fastq2.empty()) {
+
+            /*
+            auto start_comp= std::chrono::system_clock::now();
+            std::time_t time_comp = std::chrono::system_clock::to_time_t(start_comp);
+            std::cout << "start computation of reads and else group " << std::ctime(&time_comp) << "\n\n\n\n"; */
+
             // single
             function<void(Alignment&)> lambda = [&](Alignment& alignment) {
+
+                        /*
+                        auto start_1 = std::chrono::system_clock::now();
+                        std::time_t time_1 = std::chrono::system_clock::to_time_t(start_1);
+                        std::cout << "start computation of read " << std::ctime(&time_1) << "\n"; */
+
                         int tid = omp_get_thread_num();
                         vector<Alignment> alignments = mapper[tid]->align_multi(alignment,
                                                                                 kmer_size,
@@ -1067,12 +1092,35 @@ int main_map(int argc, char** argv) {
                                                                                 max_mem_length,
                                                                                 band_width,
                                                                                 band_overlap,
-                                                                                xdrop_alignment);
+                                                                                xdrop_alignment,
+                                                                                treKmers,
+                                                                                printMin);
                         //cerr << "This is just before output_alignments" << alignment.DebugString() << endl;
-                        output_alignments(alignments, empty_alns);
+                        if( treKmers == false ) {
+                            output_alignments(alignments, empty_alns);
+                        }
+
                         reads_mapped_by_thread[tid] += 1;
+
+                        /*
+                        auto stop_1 = std::chrono::system_clock::now();
+                        std::chrono::duration<double> elapsed_seconds_1 = stop_1-start_1;
+                        std::time_t end_time_1 = std::chrono::system_clock::to_time_t(stop_1);
+                        std::cout << "finished computation of read at " << std::ctime(&end_time_1)
+                                  << "elapsed time of read: " << elapsed_seconds_1.count() << "s\n\n\n\n";*/
+
                     };
+
             fastq_unpaired_for_each_parallel(fastq1, lambda);
+
+            /*
+            std::cout << "\n\n\n\n";
+            auto stop_final = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed_seconds_final = stop_final-start_comp;
+            std::time_t time_2 = std::chrono::system_clock::to_time_t(stop_final);
+            std::cout << "finish computation of reads and else group: " << std::ctime(&time_2)
+                    << "elapsed time of all reads computation: " << elapsed_seconds_final.count() << "s\n\n\n\n";  */
+
         } else {
             // paired two-file
             auto output_func = [&](Alignment& aln1,
