@@ -25,11 +25,11 @@ First, obtain the repo:
     
 Then, change branch:
 
-    git checkout vg_snp_aware
+    git checkout origin/vg_snp_aware
     
 Obtain submodules:
 
-    git submodule update --init --recurive
+    git submodule update --init --recursive
 
     
 Then, install VG's dependencies. On Ubuntu, you should be able to do:
@@ -79,6 +79,25 @@ To use VG SNP-Aware the sequentialSearch parameter is required while printMin is
 
 
 The  VG  version used by VG SNP-Aware is v1.29.0-44-ga74417fcb "Sospiro".
+
+## Resources and datasets
+
+| NAME  | DESCRIPTION |
+| ------------- | ------------- |
+| hg19  | Reference genome  |
+| dbSNP  | Biallelic SNPs dataset  |
+| NA12878  | Gold standard  |
+| SRR622461  | Dataset of reads with coverage 6X  |
+| SRR622457  | Dataset of reads with coverage 10X  |
+
+
+| NAME  | LINK |
+| ------------- | ------------- |
+| hg19  | http://cb.csail.mit.edu/cb/lava/data/hg19.fa.gz |
+| dbSNP  | http://cb.csail.mit.edu/cb/lava/data/SNPs142_hg19_Common.filt.txt |
+| NA12878  | ftp://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/release/NA12878_HG001/latest/GRCh37/  |
+| SRR622461  | ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR622/SRR622461/ |
+| SRR622457  | ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR622/SRR622457/  |
 
 
 ## Getting help
