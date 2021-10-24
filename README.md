@@ -7,30 +7,33 @@ vg represents the two nucleotides of a biallelic SNP as two possible nodes on gr
 ![Variation graph](https://raw.githubusercontent.com/monsmau/vg/vg_snp_aware/doc/figures/variationgraph_with_SNP_ID_SEQ_PATH.png)
 
 Algorithms for initial node search and for mapping have been included in the vg map command. Thus, VG SNP-Aware is a custom reimplementation of the map command of vg. 
+VG SNP-Aware is able align reads exactly to a variation graph and detect SNPs based on these aligned reads. The results show that VG SNP-Aware can efficiently map
+reads to a variation graph with a speed of 40x with respect to vg and similar accuracy on SNPs detection.
 
 ## Installation
 
-### Download Releases
-
-The easiest way to get vg is to download one of our release builds for Linux. We have a 6-week release cadence, so our builds are never too far out of date.
-
-**[![Download Button](doc/figures/download-linux.png)](https://github.com/vgteam/vg/releases/latest)**  
-**[Download the latest vg release for Linux](https://github.com/vgteam/vg/releases/latest)**
-
-
 ### Building on Linux
 
-If you don't want to or can't use a pre-built release of vg, or if you want to become a vg developer, you can build it from source instead.
 
-First, obtain the repo and its submodules:
+First, obtain the repo:
 
-    git clone --recursive https://github.com/vgteam/vg.git
+    git clone https://github.com/monsmau/vg.git
     cd vg
     
-Then, install VG's dependencies. You'll need the protobuf and jansson development libraries installed, and to run the tests you will need `jq`, `bc` and `rs`. On Ubuntu, you should be able to do:
+Then, change branch:
+
+    git checkout vg_snp_aware
+    
+Obtain submodules:
+
+    git submodule update --init --recurive
+
+    
+Then, install VG's dependencies. On Ubuntu, you should be able to do:
 
     make get-deps
-    
+
+
 On other distros, you will need to perform the equivalent of:
 
     sudo apt-get install build-essential git cmake pkg-config libncurses-dev libbz2-dev  \
@@ -38,30 +41,46 @@ On other distros, you will need to perform the equivalent of:
                          automake libtool jq bc rs curl unzip redland-utils \
                          librdf-dev bison flex gawk lzma-dev liblzma-dev liblz4-dev \
                          libffi-dev libcairo-dev libboost-all-dev
-                         
-Note that **Ubuntu 16.04** does not ship a sufficiently new Protobuf; vg requires **Protobuf 3** which will have to be manually installed.
-
-At present, you will need GCC version 4.9 or greater, with support for C++14, to compile vg. (Check your version with `gcc --version`.)
-
-Other libraries may be required. Please report any build difficulties.
-
-Note that a 64-bit OS is required. Ubuntu 18.04 should work. You will also need a CPU that supports SSE 4.2 to run VG; you can check this with `cat /proc/cpuinfo | grep sse4_2`.
-
-When you are ready, build with `. ./source_me.sh && make`, and run with `./bin/vg`.
-
-You can also produce a static binary with `make static`, assuming you have static versions of all the dependencies installed on your system.
 
 
+Check that Protobuf version is at least 3.0
+Check that gcc version is at least 4.9
+Check that cmake version is at least 3.18.x (https://github.com/vgteam/vg/issues/3014)
+
+
+Build VG including VG SNP-Aware:
+
+    make static
 
 
 ## Usage
 
+The VG SNP-Aware implementation follows the vg pipeline, the change has been made to the vg map command. 
+
+![Variation graph](https://raw.githubusercontent.com/monsmau/vg/vg_snp_aware/doc/figures/vgpipelinecomplete.png)
+
+In order  to  perform the  entire genotyping  process  the vg construct  and index steps are required to obtain the graphs.
+ 
+The map command of VG SNP-Aware includes:
+*  --sequentialSearch:  performs the alignment on graph with the VG SNP-Aware al-gorithm describes on section 
+*  --printMin: allows to reduce the output size to only reads with one or more referenceor alternative base of SNPs
+
+To use VG SNP-Aware the sequentialSearch parameter is required while printMin is an optional parameter but it is recommended. The -j parameter is mandatory to obtain as output the JSON mapping file. It is possible to use the vg view command to switch from JSON to GAM files and vice versa.
 
 
-# Getting help
+    vg map -f reads.fq -x graph.xg -g graph.gcsa --printMin --sequentialSearch -j 
+ 
+    vg map -f reads.fq -x graph.xg -g graph.gcsa --sequentialSearch -j
+
+
+The  VG  version used by VG SNP-Aware is v1.29.0-44-ga74417fcb "Sospiro".
+
+
+## Getting help
 If you encounter bugs or have further questions or requests, you can raise an issue at the issue page. You can also contact Maurilio Monsù at maurilio.monsu@studenti.unipd.it
 
-# Citation
+
+## Citation
  M. Monsù, M. Comin, "Fast Alignment of Reads to a Variation Graph with Application to SNP Detection", under submission.
 
 
