@@ -452,7 +452,9 @@ private:
                                            int keep_multimaps = 0,
                                            int additional_multimaps = 0,
                                            vector<MaximalExactMatch>* restricted_mems = nullptr,
-                                           bool xdrop_alignment = false);
+                                           bool xdrop_alignment = false,
+                                           bool trekmer = false,
+                                           bool printMin = false);
     void compute_mapping_qualities(vector<Alignment>& alns, double cluster_mq, double mq_estimate, double mq_cap);
     void compute_mapping_qualities(pair<vector<Alignment>, vector<Alignment>>& pair_alns, double cluster_mq, double mq_estmate1, double mq_estimate2, double mq_cap1, double mq_cap2);
     vector<Alignment> score_sort_and_deduplicate_alignments(vector<Alignment>& all_alns, const Alignment& original_alignment);
@@ -476,7 +478,9 @@ private:
                                       int max_mem_length,
                                       int keep_multimaps,
                                       int additional_multimaps,
-                                      bool xdrop_alignment = false);
+                                      bool xdrop_alignment = false,
+                                      bool trekmer = false,
+                                      bool printMin = false);
     
 protected:
     Alignment align_to_graph(const Alignment& aln,
@@ -582,7 +586,9 @@ public:
                                   int max_mem_length = 0,
                                   int band_width = 1000,
                                   int band_overlap = 500,
-                                  bool xdrop_alignment = false);
+                                  bool xdrop_alignment = false,
+                                  bool trekmer = false,
+                                  bool printMin = false);
     
     // paired-end based
     
