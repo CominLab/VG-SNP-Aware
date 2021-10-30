@@ -56,7 +56,7 @@ void help_map(char** argv) {
          << "    --no-patch-aln                do not patch banded alignments by locally aligning unaligned regions" << endl
          << "    --xdrop-alignment             use X-drop heuristic (much faster for long-read alignment)" << endl
          << "    --max-gap-length              maximum gap length allowed in each contiguous alignment (for X-drop alignment) [40]" << endl
-         << "    --snp-aware           search for the first match node and perform a sequential search starting from it (works only with fq file input and -j)" << endl
+         << "    --snp-aware                   search for the first match node and perform a sequential search starting from it (works only with fq file input and -j)" << endl
          << "scoring:" << endl
          << "    -q, --match INT               use this match score [1]" << endl
          << "    -z, --mismatch INT            use this mismatch penalty [4]" << endl
