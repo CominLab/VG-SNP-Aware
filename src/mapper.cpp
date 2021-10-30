@@ -5297,17 +5297,20 @@ vector <Alignment> Mapper::align_multi_internal(bool compute_unpaired_quality,
 
         } else {
 
-            //Sequential Alg for SNPs (Maurilio Monsù 2020)
+            //VG SNP-AWARE Alg for SNPs (Maurilio Monsù 2020)
 
-
+            int lengthRead = aln.sequence().size();
+            std::string tmpRead = aln.sequence();
+            if (!tmpRead.empty() && tmpRead[tmpRead.size() - 1] == '\r')
+                lengthRead = lengthRead -1;
 
             vector<MaximalExactMatch> mems = find_mems_deep(aln.sequence().begin(),
                                                             aln.sequence().end(),
                                                             longest_lcp,
                                                             fraction_filtered,
                                                             max_mem_length,
-                                                            101,
-                                                            round(1.5 * 101),
+                                                            lengthRead,
+                                                            round(1.5 * lengthRead),
                                                             false, true, true,
                                                             true); // Make sure to actually fill in the longest LCP.
 
@@ -5367,8 +5370,8 @@ vector <Alignment> Mapper::align_multi_internal(bool compute_unpaired_quality,
 
                             //cout << tmp_node << endl;
 
-                            //Controllo su nodo!
-                            if (tmp_node < 1 || tmp_node > 123539617) {
+                            //Check node
+                            if (tmp_node < 1 || tmp_node > xindex->max_node_id()) {
                                 noMatch = true;
                                 break;
                             }
@@ -5423,7 +5426,7 @@ vector <Alignment> Mapper::align_multi_internal(bool compute_unpaired_quality,
                             //cout << tmp_node << endl;
 
                             //Check node
-                            if (tmp_node > 123539617 || tmp_node < 1) {
+                            if (tmp_node > xindex->max_node_id() || tmp_node < 1) {
                                 noMatch = true;
                                 break;
                             }
@@ -5612,7 +5615,7 @@ vector <Alignment> Mapper::align_multi_internal(bool compute_unpaired_quality,
 
                                         int charOnnode;
                                         if (numOfnode - 1 == lastNode) {
-                                            charOnnode = 101 - nucleotidiMatch;
+                                            charOnnode = lengthRead - nucleotidiMatch;
                                             charOnLastNode = charOnnode;
                                             outputToPrint.append(
                                                     "{\"edit\": [{\"from_length\": " + std::to_string(charOnnode) +
@@ -5641,7 +5644,7 @@ vector <Alignment> Mapper::align_multi_internal(bool compute_unpaired_quality,
 
                                         int charOnnode;
                                         if (numOfnode - 1 == lastNode) {
-                                            charOnnode = 101 - nucleotidiMatch;
+                                            charOnnode = lengthRead - nucleotidiMatch;
                                             charOnLastNode = charOnnode;
                                             outputToPrint.append(
                                                     "{\"edit\": [{\"from_length\": " + std::to_string(charOnnode) +
