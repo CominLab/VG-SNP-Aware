@@ -56,7 +56,7 @@ void help_map(char** argv) {
          << "    --no-patch-aln                do not patch banded alignments by locally aligning unaligned regions" << endl
          << "    --xdrop-alignment             use X-drop heuristic (much faster for long-read alignment)" << endl
          << "    --max-gap-length              maximum gap length allowed in each contiguous alignment (for X-drop alignment) [40]" << endl
-         << "    --sequentialSearch            search for the first match node and perform a sequential search starting from it (works only with fq file input)" << endl
+         << "    --snp-aware           search for the first match node and perform a sequential search starting from it (works only with fq file input and -j)" << endl
          << "scoring:" << endl
          << "    -q, --match INT               use this match score [1]" << endl
          << "    -z, --mismatch INT            use this mismatch penalty [4]" << endl
@@ -95,7 +95,7 @@ void help_map(char** argv) {
          << "    -Q, --mq-max INT              cap the mapping quality at INT [60]" << endl
          << "    --exclude-unaligned           exclude reads with no alignment" << endl
          << "    -D, --debug                   print debugging information about alignment to stderr" << endl
-         << "    --printMin                    print only alignments with variant matches (works with --sequentialSearch)" << endl
+         << "    --printsnp                    print only alignments with variant matches (works with --snp-aware)" << endl
          << "    --log-time                    print runtime to stderr" << endl;
 
 }
@@ -271,8 +271,8 @@ int main_map(int argc, char** argv) {
                 {"xdrop-alignment", no_argument, 0, 2},
                 {"gaf", no_argument, 0, '%'},
                 {"log-time", no_argument, 0, '^'},
-                {"sequentialSearch", no_argument, 0, '!'},
-                {"printMin", no_argument, 0, '-'},
+                {"snp-aware", no_argument, 0, '!'},
+                {"printsnp", no_argument, 0, '-'},
                 {0, 0, 0, 0}
             };
 
