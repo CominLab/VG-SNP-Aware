@@ -64,7 +64,7 @@ The VG SNP-Aware implementation follows the vg pipeline, the change has been mad
 
 ![Variation graph](https://raw.githubusercontent.com/monsmau/vg/vg_snp_aware/doc/figures/vgpipelinecomplete.png)
 
-In order  to  perform the  entire genotyping  process  the vg construct  and index steps are required to obtain the graphs.
+In order  to  perform the  entire genotyping  process  the vg construct  and index steps are required to obtain the graphs. See https://github.com/vgteam/vg/wiki 
  
 The map command of VG SNP-Aware includes:
 *  --snp-aware:  performs the alignment on graph with the VG SNP-Aware algorithm 
