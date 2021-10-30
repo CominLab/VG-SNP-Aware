@@ -67,15 +67,15 @@ The VG SNP-Aware implementation follows the vg pipeline, the change has been mad
 In order  to  perform the  entire genotyping  process  the vg construct  and index steps are required to obtain the graphs.
  
 The map command of VG SNP-Aware includes:
-*  --sequentialSearch:  performs the alignment on graph with the VG SNP-Aware algorithm 
-*  --printMin: allows to reduce the output size to only reads with one or more reference or alternative base of SNPs
+*  --snp-aware:  performs the alignment on graph with the VG SNP-Aware algorithm 
+*  --printsnp: allows to reduce the output size to only reads with one or more reference or alternative base of SNPs
 
 To use VG SNP-Aware the sequentialSearch parameter is required while printMin is an optional parameter but it is recommended. The -j parameter is mandatory to obtain as output the JSON mapping file. It is possible to use the vg view command to switch from JSON to GAM files and vice versa.
 
 
-    vg map -f reads.fq -x graph.xg -g graph.gcsa --printMin --sequentialSearch -j 
+    vg map -f reads.fq -x graph.xg -g graph.gcsa --printsnp --snp-aware -j 
  
-    vg map -f reads.fq -x graph.xg -g graph.gcsa --sequentialSearch -j
+    vg map -f reads.fq -x graph.xg -g graph.gcsa --snp-aware -j
 
 
 The  VG  version used by VG SNP-Aware is v1.29.0-44-ga74417fcb "Sospiro".
