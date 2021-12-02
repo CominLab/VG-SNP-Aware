@@ -105,6 +105,6 @@ If you encounter bugs or have further questions or requests, you can raise an is
 
 
 ## Citation
- M. Monsù, M. Comin, "Fast Alignment of Reads to a Variation Graph with Application to SNP Detection", under submission.
-
+Monsu, Maurilio and Comin, Matteo. "Fast alignment of reads to a variation graph with application to SNP detection" 
+Journal of Integrative Bioinformatics, vol. , no. , 2021, pp. 20210032. https://doi.org/10.1515/jib-2021-0032
 
